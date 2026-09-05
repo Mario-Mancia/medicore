@@ -12,7 +12,10 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
+        $datos = [
+            "usuarios" => Usuario::mostrarTodos()
+        ];
+        return view('usuario.usuarios', $datos);
     }
 
     /**

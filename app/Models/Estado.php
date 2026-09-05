@@ -16,14 +16,14 @@ class Estado extends Model
         'estado',
     ];
 
-    protected $casts = [
-        // De momento no hay campos que requieran conversión.
-    ];
-
     private static function validaciones($id = null): array
     {
         return [
-            'estado' => ['required', 'string', 'max:255'],
+            'estado' => [
+                'required',
+                'string',
+                'max:50',
+            ],
         ];
     }
 

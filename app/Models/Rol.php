@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 class Rol extends Model
 {
@@ -16,14 +17,14 @@ class Rol extends Model
         'rol',
     ];
 
-    protected $casts = [
-        // De momento no hay campos que requieran conversión explícita.
-    ];
-
     private static function validaciones($id = null): array
     {
         return [
-            'rol' => ['required', 'string', 'max:255'],
+            'rol' => [
+                'required',
+                'string',
+                'max:50',
+            ],
         ];
     }
 
