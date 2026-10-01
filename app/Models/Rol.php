@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 class Rol extends Model
@@ -34,5 +35,10 @@ class Rol extends Model
             $datos,
             static::validaciones($id)
         )->validate();
+    }
+
+    public static function mostrarTodos(): Collection
+    {
+        return static::all();
     }
 }

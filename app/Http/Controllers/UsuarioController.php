@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ActualizarUsuarioRequest;
+use App\Http\Requests\InsertarUsuarioRequest;
+use App\Models\Estado;
+use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -13,56 +18,43 @@ class UsuarioController extends Controller
     public function index()
     {
         $datos = [
-            "usuarios" => Usuario::mostrarTodos()
+            "usuarios" => Usuario::mostrarTodos(),
+            "roles" => Rol::mostrarTodos(),
+            "estados" => Estado::mostrarTodos(),
         ];
         return view('usuario.usuarios', $datos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function insertarUsuario(InsertarUsuarioRequest $request)
     {
-        //
+        $datos = $request->validated();
+
+        $datos['contrasenha'] = bcrypt($datos['contrasenha']);
+
+        Usuario::insertar($datos);
+
+        return redirect()->route('usuarios')->with('success', 'Usuario insertado correctamente');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function buscarUsuarioXId(int $id)
     {
-        //
+        return response()->json(Usuario::buscarXId($id));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Usuario $usuario)
+    public function actualizarUsuario(ActualizarUsuarioRequest $request, Usuario $usuario)
     {
-        //
+        if (Usuario::actualizar($request->validated(), $usuario->getKey())) {
+            return redirect()->route('usuarios')->with('success', 'Usuario actualizado correctamente');
+        }
+        return redirect()->route('usuarios')->with('error', 'Usuario no actualizado');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Usuario $usuario)
+    public function eliminarUsuario(Usuario $usuario)
     {
-        //
+        if (Usuario::eliminar($usuario->getKey())) {
+            return redirect()->route('usuarios')->with('success', 'Usuario eliminado correctamente');
+        }
+        return redirect()->route('usuarios')->with('error', 'Usuario no eliminado');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Usuario $usuario)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Usuario $usuario)
-    {
-        //
-    }
 }

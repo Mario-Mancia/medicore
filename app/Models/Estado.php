@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 class Estado extends Model
@@ -33,5 +34,10 @@ class Estado extends Model
             $datos,
             static::validaciones($id)
         )->validate();
+    }
+
+    public static function mostrarTodos($id = null): Collection
+    {
+        return static::all();
     }
 }
